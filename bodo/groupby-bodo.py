@@ -41,7 +41,9 @@ def groupby(df,columns,mapper):
 #from datatable import fread # for loading data only, see #47
 @bodo.jit(cache=True)
 def run():
+  print("starting")
   x = pd.read_csv(src_grp)
+  print("done reading")
   x['id1'] = x['id1'].astype('category') # remove after datatable#1691
   x['id2'] = x['id2'].astype('category')
   x['id3'] = x['id3'].astype('category')
@@ -51,7 +53,8 @@ def run():
   x['v1'] = x['v1'].astype('Int32')
   x['v2'] = x['v2'].astype('Int32')
   x['v3'] = x['v3'].astype('float64')
-
+  
+  print("done converting type")
   print(len(x.index))
 
   task_init = time.time()

@@ -3,7 +3,6 @@
 import os
 import gc
 import sys
-import timeit
 import pandas as pd
 import bodo
 import time
@@ -204,5 +203,6 @@ def run(src_grp):
 
   bodo.barrier()
   print(f"grouping finished, took  {time.time()-task_init}")
+
 run(src_grp)
 exit(0)

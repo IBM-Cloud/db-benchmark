@@ -4,6 +4,7 @@ set -e
 # install all dependencies
 sudo apt-get update
 sudo apt-get install build-essential python3-dev python3-pip
+sudo apt-get install -y mpi
 
 virtualenv bodo/py-bodo --python=/usr/bin/python3.9
 source bodo/py-bodo/bin/activate

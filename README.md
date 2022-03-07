@@ -18,6 +18,7 @@ Contribution and feedback are very welcome!
   - [x] [DataFrames.jl](https://github.com/JuliaData/DataFrames.jl)
   - [x] [pandas](https://github.com/pandas-dev/pandas)
   - [x] [(py)datatable](https://github.com/h2oai/datatable)
+  - [x] [bodo](https://docs.bodo.ai/quick_start/)
   - [x] [spark](https://github.com/apache/spark)
   - [x] [cuDF](https://github.com/rapidsai/cudf)
   - [x] [ClickHouse](https://github.com/yandex/ClickHouse)

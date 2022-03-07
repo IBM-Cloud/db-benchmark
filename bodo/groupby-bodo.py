@@ -32,7 +32,7 @@ if na_flag > 0:
   print("skip due to na_flag>0: #171", file=sys.stderr)
   exit(0) # not yet implemented #171
 
-@bodo.jit(cache=True)
+@bodo.jit
 def question9(x,run):
   question = "regression v1 v2 by id2 id4" # q9
   t_start = time.time()
@@ -57,7 +57,7 @@ def question9(x,run):
       print(ans.head(3))
       print(ans.tail(3))
 
-@bodo.jit(cache=True)
+@bodo.jit
 def question8(x,run):
   question = "largest two v3 by id6" # q8
   t_start = time.time()
@@ -83,7 +83,7 @@ def question8(x,run):
       print(ans.head(3))
       print(ans.tail(3))
 
-@bodo.jit(cache=True)
+@bodo.jit
 def question7(x,run):
   question = "max v1 - min v2 by id3" # q7
   t_start = time.time()
@@ -108,7 +108,7 @@ def question7(x,run):
       print(ans.head(3))
       print(ans.tail(3))
 
-@bodo.jit(cache=True)
+@bodo.jit
 def question6(x,question,run,columns,mappers):
   t_start = time.time()
   with bodo.objmode:
@@ -132,7 +132,7 @@ def question6(x,question,run,columns,mappers):
       print(ans.head(3))
       print(ans.tail(3))
 
-@bodo.jit(cache=True)
+@bodo.jit
 def rquestion(x,question,run,columns,mappers,ans_columns):
   t_start = time.time()
   with bodo.objmode:

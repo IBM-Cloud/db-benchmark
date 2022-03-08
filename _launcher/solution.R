@@ -94,7 +94,7 @@ if ("print" %in% names(args)) {
   if (!stdout)
     stop("'print' argument can only be used when printing to console, not specifying 'out' argument")
 } else {
-  args[["print"]] = "on_disk,question,run,time_sec"
+  args[["print"]] = "question,run,time_sec,chk_time_sec,mem_gb"
 }
 
 if ("quiet" %in% names(args)) {
@@ -113,7 +113,7 @@ file.ext = function(x) {
     "data.table"=, "dplyr"=, "h2o"=, "arrow"=, "duckdb"="R",
     "pandas"=, "cudf"=, "spark"=, "pydatatable"=, "modin"=, "dask"=, "polars"="py",
     "clickhouse"="sql",
-    "juliadf"="jl"
+    "juliadf"="jl", "bodo"="py"
   )
   if (is.null(ans)) stop(sprintf("solution %s does not have file extension defined in file.ext helper function", x))
   ans
@@ -158,6 +158,17 @@ localcmd = if (s %in% c("clickhouse","h2o","juliadf")) { # custom launcher bash 
   sprintf("exec.sh %s", t)
 } else sprintf("%s-%s.%s", t, ns, ext)
 cmd = sprintf("./%s/%s", ns, localcmd)
+if (s == "bodo") {
+  bodo_cores = 6
+  if (length(s[grep("^BODO_CORES", names(Sys.getenv()))])) {
+    bodo_cores = Sys.getenv("BODO_CORES")
+    cat(sprintf("Found environment BODO_CORES=%s. Running bodo with %s cores.\n", bodo_cores, bodo_cores))
+  } else {
+    cat(sprintf("Running bodo with default %s cores. You may set environment BODO_CORES for a different number of cores.\n", bodo_cores))
+  }
+  flush.console()
+  cmd = paste("mpiexec -n ", bodo_cores, cmd)
+}
 
 ret = system(cmd, ignore.stdout=as.logical(args[["quiet"]]))
 

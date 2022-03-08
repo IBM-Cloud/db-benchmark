@@ -32,7 +32,7 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
   t = time.time() - t_start
   with bodo.objmode(m='float64'):
     m = memory_usage()
-  t_start = timeit.default_timer()
+  t_start = time.time()
   chk = [ans[ans_columns].sum()]
   chkt = time.time() - t_start
   with bodo.objmode:
@@ -41,7 +41,6 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
     if(run==2 and bodo.get_rank()==0):
       print(ans.head(3))
     print(ans.tail(3))
-  del ans
 
 @bodo.jit(cache=True)
 def run(src_grp):

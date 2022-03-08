@@ -28,7 +28,7 @@ if(bodo.get_rank()==0):
   print("loading datasets " + data_name + ", " + y_data_name[0] + ", " + y_data_name[1] + ", " + y_data_name[2], flush=True)
 
 @bodo.jit
-def rquestion(x,question,join_df,run,columns,join_type,ans_column1,ans_column2):
+def rquestion(x,question,join_df,run,columns,join_type,ans_columns1,ans_columns2):
   with bodo.objmode:
     gc.collect()
   t_start = time.time()
@@ -38,7 +38,7 @@ def rquestion(x,question,join_df,run,columns,join_type,ans_column1,ans_column2):
   with bodo.objmode(m='float64'):
     m = memory_usage()
   t_start = time.time()
-  chk = [ans[ans_column1].sum(), ans[ans_column2].sum()]
+  chk = [ans[ans_columns1].sum(), ans[ans_columns2].sum()]
   chkt = time.time() - t_start
   with bodo.objmode:
     if(bodo.get_rank()==0):
@@ -46,7 +46,6 @@ def rquestion(x,question,join_df,run,columns,join_type,ans_column1,ans_column2):
     if(run==2 and bodo.get_rank()==0):
       print(ans.head(3))
       print(ans.tail(3))
-  del ans
 
 @bodo.jit(cache=True)
 def run(src_jn_x, src_jn_small, src_jn_medium, src_jn_big):
@@ -88,16 +87,16 @@ def run(src_jn_x, src_jn_small, src_jn_medium, src_jn_big):
   task_init = time.time()
   print("joining...")
 
-  rquestion(x=x,question="small inner on int",join_df=small,run=1,columns='id1',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="small inner on int",join_df=small,run=2,columns='id1',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="medium inner on int",join_df=medium,run=1,columns='id2',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="medium inner on int",join_df=medium,run=2,columns='id2',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="medium outer on int",join_df=medium,run=1,columns='id2',join_type='left',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="medium outer on int",join_df=medium,run=2,columns='id2',join_type='left',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="medium inner on factor",join_df=medium,run=1,columns='id5',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="medium inner on factor",join_df=medium,run=2,columns='id5',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="big inner on int",join_df=big,run=1,columns='id3',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
-  rquestion(x=x,question="big inner on int",join_df=big,run=2,columns='id3',join_type='inner',ans_columns1=['v1'], ans_columns2=['v2'])
+  rquestion(x=x,question="small inner on int",join_df=small,run=1,columns='id1',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="small inner on int",join_df=small,run=2,columns='id1',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="medium inner on int",join_df=medium,run=1,columns='id2',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="medium inner on int",join_df=medium,run=2,columns='id2',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="medium outer on int",join_df=medium,run=1,columns='id2',join_type='left',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="medium outer on int",join_df=medium,run=2,columns='id2',join_type='left',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="medium inner on factor",join_df=medium,run=1,columns='id5',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="medium inner on factor",join_df=medium,run=2,columns='id5',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="big inner on int",join_df=big,run=1,columns='id3',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
+  rquestion(x=x,question="big inner on int",join_df=big,run=2,columns='id3',join_type='inner',ans_columns1=['v1'],ans_columns2=['v2'])
 
   bodo.barrier()
   print(f"joining finished, took  {time.time()-task_init}")

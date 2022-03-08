@@ -19,6 +19,7 @@ on_disk = "FALSE"
 
 data_name = os.environ['SRC_DATANAME']
 src_grp = os.path.join("data", data_name+".csv")
+#src_jn_x = os.path.join("data", data_name+"_partitioned/")
 if(bodo.get_rank()==0):
   print("loading dataset %s" % src_grp, flush=True)
 
@@ -28,7 +29,6 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
     gc.collect()
   t_start = time.time()
   ans = x.groupby(columns).agg(mappers)
-  print(ans.shape)
   t = time.time() - t_start
   with bodo.objmode(m='float64'):
     m = memory_usage()
@@ -41,8 +41,11 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
 
 @bodo.jit(cache=True)
 def run(src_grp):
+  print("Starting to read base dataframe")
+  task_init = time.time()
   x = pd.read_csv(src_grp)
-  print(len(x.index))
+  #x = pd.read_parquet(src_grp)
+  print(f"done reading base dataframe in {time.time()-task_init}")
   task_init = time.time()
   print("grouping...")
 

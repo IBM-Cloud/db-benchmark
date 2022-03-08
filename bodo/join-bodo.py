@@ -19,6 +19,7 @@ on_disk = "FALSE"
 
 data_name = os.environ['SRC_DATANAME']
 src_jn_x = os.path.join("data", data_name+".csv")
+#src_jn_x = os.path.join("data", data_name+"_partitioned/")
 y_data_name = join_to_tbls(data_name)
 src_jn_small = os.path.join("data", y_data_name[0]+".csv")
 src_jn_medium = os.path.join("data", y_data_name[1]+".csv")
@@ -29,11 +30,8 @@ if(bodo.get_rank()==0):
 
 @bodo.jit
 def rquestion(x,question,join_df,run,columns,join_type,ans_columns1,ans_columns2):
-  with bodo.objmode:
-    gc.collect()
   t_start = time.time()
   ans = x.merge(join_df, how=join_type, on=columns)
-  print(ans.shape)
   t = time.time() - t_start
   with bodo.objmode(m='float64'):
     m = memory_usage()
@@ -46,40 +44,24 @@ def rquestion(x,question,join_df,run,columns,join_type,ans_columns1,ans_columns2
 
 @bodo.jit(cache=True)
 def run(src_jn_x, src_jn_small, src_jn_medium, src_jn_big):
+  print("Starting to read base dataframe")
+  task_init = time.time()
   x = pd.read_csv(src_jn_x)
-  print("done reading")
-  x['id1'] = x['id1'].astype('Int32')
-  x['id2'] = x['id2'].astype('Int32')
-  x['id3'] = x['id3'].astype('Int32')
-  x['id4'] = x['id4'].astype('category') # remove after datatable#1691
-  x['id5'] = x['id5'].astype('category')
-  x['id6'] = x['id6'].astype('category')
-  x['v1'] = x['v1'].astype('float64')
+  #x = pd.read_parquet(src_jn_x)
+  print(f"done reading base dataframe in {time.time()-task_init}")
 
+  task_init = time.time()
+  print("Starting to read small join dataframe")
   small = pd.read_csv(src_jn_small)
-  small['id1'] = small['id1'].astype('Int32')
-  small['id4'] = small['id4'].astype('category')
-  small['v2'] = small['v2'].astype('float64')
+  print(f"done reading small join dataframe in {time.time()-task_init}")
+  print("Starting to read medium join dataframe")
+  task_init = time.time()
   medium = pd.read_csv(src_jn_medium)
-  medium['id1'] = medium['id1'].astype('Int32')
-  medium['id2'] = medium['id2'].astype('Int32')
-  medium['id4'] = medium['id4'].astype('category')
-  medium['id5'] = medium['id5'].astype('category')
-  medium['v2'] = medium['v2'].astype('float64')
+  print(f"done reading medium join dataframe in {time.time()-task_init}")
+  print("Starting to read big join dataframe")
+  task_init = time.time()
   big = pd.read_csv(src_jn_big)
-  big['id1'] = big['id1'].astype('Int32')
-  big['id2'] = big['id2'].astype('Int32')
-  big['id3'] = big['id3'].astype('Int32')
-  big['id4'] = big['id4'].astype('category')
-  big['id5'] = big['id5'].astype('category')
-  big['id6'] = big['id6'].astype('category')
-  big['v2'] = big['v2'].astype('float64')
-  print(len(x.index))
-  print(len(small.index))
-  print(len(medium.index))
-  print(len(big.index))
-  print("done converting type")
-  print(len(x.index))
+  print(f"done reading big join dataframe in {time.time()-task_init}")
 
   task_init = time.time()
   print("joining...")

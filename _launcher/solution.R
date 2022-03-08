@@ -94,7 +94,7 @@ if ("print" %in% names(args)) {
   if (!stdout)
     stop("'print' argument can only be used when printing to console, not specifying 'out' argument")
 } else {
-  args[["print"]] = "on_disk,question,run,time_sec"
+  args[["print"]] = "question,run,time_sec,chk_time_sec,mem_gb"
 }
 
 if ("quiet" %in% names(args)) {

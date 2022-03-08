@@ -52,9 +52,6 @@ def question9(x,run):
     if(bodo.get_rank()==0):
       write_log(task=task, data=data_name, in_rows=x.shape[0], question=question, out_rows=ans.shape[0], out_cols=ans.shape[1], solution=solution, version=ver, git=git, fun=fun, run=run, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
     gc.collect()
-    if(run==2 and bodo.get_rank()==0):
-      print(ans.head(3))
-      print(ans.tail(3))
 
 @bodo.jit
 def question8(x,run):
@@ -78,9 +75,6 @@ def question8(x,run):
     if(bodo.get_rank()==0):
       write_log(task=task, data=data_name, in_rows=x.shape[0], question=question, out_rows=ans.shape[0], out_cols=ans.shape[1], solution=solution, version=ver, git=git, fun=fun, run=run, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
     gc.collect()
-    if(run==2 and bodo.get_rank()==0):
-      print(ans.head(3))
-      print(ans.tail(3))
 
 @bodo.jit
 def question7(x,run):
@@ -103,9 +97,6 @@ def question7(x,run):
     if(bodo.get_rank()==0):
       write_log(task=task, data=data_name, in_rows=x.shape[0], question=question, out_rows=ans.shape[0], out_cols=ans.shape[1], solution=solution, version=ver, git=git, fun=fun, run=run, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
     gc.collect()
-    if(run==2 and bodo.get_rank()==0):
-      print(ans.head(3))
-      print(ans.tail(3))
 
 @bodo.jit
 def question6(x,question,run,columns,mappers):
@@ -127,9 +118,6 @@ def question6(x,question,run,columns,mappers):
       write_log(task=task, data=data_name, in_rows=x.shape[0], question=question, out_rows=ans.shape[0], out_cols=ans.shape[1], solution=solution, version=ver, git=git, fun=fun, run=run, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
     #del ans
     gc.collect()
-    if(run==2 and bodo.get_rank()==0):
-      print(ans.head(3))
-      print(ans.tail(3))
 
 @bodo.jit
 def rquestion(x,question,run,columns,mappers,ans_columns):
@@ -150,9 +138,6 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
     if(bodo.get_rank()==0):
       write_log(task=task, data=data_name, in_rows=x.shape[0], question=question, out_rows=ans.shape[0], out_cols=ans.shape[1], solution=solution, version=ver, git=git, fun=fun, run=run, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
     gc.collect()
-    if(run==2 and bodo.get_rank()==0):
-      print(ans.head(3))
-      print(ans.tail(3))
 
 #from datatable import fread # for loading data only, see #47
 @bodo.jit(cache=True)

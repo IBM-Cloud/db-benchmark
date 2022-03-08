@@ -37,10 +37,7 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
   chkt = time.time() - t_start
   with bodo.objmode:
     if(bodo.get_rank()==0):
-      write_log(task=task, data=data_name, in_rows=len(x.index), question=question, out_rows=len(ans.index), out_cols=len(ans.index.names)+len(ans.columns), solution=solution, version=ver, git=git, fun=fun, run=1, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
-    if(run==2 and bodo.get_rank()==0):
-      print(ans.head(3))
-    print(ans.tail(3))
+      write_log(task=task, data=data_name, in_rows=len(x.index), question=question, out_rows=len(ans.index), out_cols=len(ans.index.names)+len(ans.columns), solution=solution, version=ver, git=git, fun=fun, run=run, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
 
 @bodo.jit(cache=True)
 def run(src_grp):

@@ -18,15 +18,16 @@ cache = "TRUE"
 on_disk = "FALSE"
 
 data_name = os.environ['SRC_DATANAME']
-src_jn_x = os.path.join("data", data_name+".csv")
-#src_jn_x = os.path.join("data", data_name+"_partitioned/")
+#src_jn_x = os.path.join(os.getcwd(), "data", data_name+".csv")
+src_jn_x = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
 y_data_name = join_to_tbls(data_name)
 src_jn_small = os.path.join("data", y_data_name[0]+".csv")
 src_jn_medium = os.path.join("data", y_data_name[1]+".csv")
-src_jn_big = os.path.join("data", y_data_name[2]+".csv")
+#src_jn_big = os.path.join("data", y_data_name[2]+".csv")
+src_jn_big = os.path.join("data", y_data_name[2]+"_partitioned/")
 
 if(bodo.get_rank()==0):
-  print("loading datasets " + data_name + ", " + y_data_name[0] + ", " + y_data_name[1] + ", " + y_data_name[2], flush=True)
+  print("loading datasets " + src_jn_x + ", " + src_jn_small + ", " + src_jn_medium + ", " + src_jn_big, flush=True)
 
 @bodo.jit
 def rquestion(x,question,join_df,run,columns,join_type,ans_columns1,ans_columns2):
@@ -46,8 +47,8 @@ def rquestion(x,question,join_df,run,columns,join_type,ans_columns1,ans_columns2
 def run(src_jn_x, src_jn_small, src_jn_medium, src_jn_big):
   print("Starting to read base dataframe")
   task_init = time.time()
-  x = pd.read_csv(src_jn_x)
-  #x = pd.read_parquet(src_jn_x)
+  #x = pd.read_csv(src_jn_x)
+  x = pd.read_parquet(src_jn_x)
   print(f"done reading base dataframe in {time.time()-task_init}")
 
   task_init = time.time()
@@ -60,7 +61,8 @@ def run(src_jn_x, src_jn_small, src_jn_medium, src_jn_big):
   print(f"done reading medium join dataframe in {time.time()-task_init}")
   print("Starting to read big join dataframe")
   task_init = time.time()
-  big = pd.read_csv(src_jn_big)
+  #big = pd.read_csv(src_jn_big)
+  big = pd.read_parquet(src_jn_big)
   print(f"done reading big join dataframe in {time.time()-task_init}")
 
   task_init = time.time()

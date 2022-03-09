@@ -22,8 +22,8 @@ cache = "TRUE"
 on_disk = "FALSE"
 
 data_name = os.environ['SRC_DATANAME']
-src_grp = os.path.join("data", data_name+".csv")
-#src_jn_x = os.path.join("data", data_name+"_partitioned/")
+#src_grp = os.path.join(os.getcwd(), "data", data_name+".csv")
+src_grp = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
 if(bodo.get_rank()==0):
   print("loading dataset %s" % src_grp)
 
@@ -120,8 +120,8 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
 def run(src_grp):
   print("Starting to read base dataframe")
   task_init = time.time()
-  x = pd.read_csv(src_grp)
-  #x = pd.read_parquet(src_grp)
+  #x = pd.read_csv(src_grp)
+  x = pd.read_parquet(src_grp)
   print(f"done reading base dataframe in {time.time()-task_init}")
 
   task_init = time.time()

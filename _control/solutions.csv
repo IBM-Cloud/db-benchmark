@@ -29,3 +29,6 @@ arrow,groupby
 arrow,join
 duckdb,groupby
 duckdb,join
+modin,groupby
+modin,join
+modin,sort

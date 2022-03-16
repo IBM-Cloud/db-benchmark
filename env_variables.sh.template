@@ -1,0 +1,20 @@
+#Example endpoing: AWS_S3_ENDPOINT=https://s3.eu-de.cloud-object-storage.appdomain.cloud
+export AWS_S3_ENDPOINT=<your S3 endpoint here>
+
+#Default region only matters when using AWS S3
+export AWS_DEFAULT_REGION=<your S3 endpoint here>
+
+export S3_BUCKET=<your bucket name>
+
+export AWS_ACCESS_KEY_ID=<your HMAC access key>
+export AWS_SECRET_ACCESS_KEY=<your HMAC secret key>
+
+export SRC_LOCATION=<set to 's3' when using S3, otherwise local disk will be used>
+
+# When using parqet you need to have stored the data in folder with format:
+# <base name of CSV file>_partitioned
+export SRC_FORMAT=<set to 'parquet' for parquet data, otherwise csv will be used>
+
+export BODO_MPI_HOSTS=<path to file with you cluster IPs or hostnames for bod MPI>
+
+export BODO_CORES=<number of mpi cores for bodo>

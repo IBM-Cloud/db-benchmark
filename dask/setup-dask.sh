@@ -10,6 +10,7 @@ source dask/py-dask/bin/activate
 
 # install binaries
 python -m pip install --upgrade dask[complete]
+python -m pip install --upgrade fastparquet[complete]
 
 # check
 python

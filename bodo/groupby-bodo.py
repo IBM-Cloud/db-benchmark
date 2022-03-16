@@ -22,8 +22,11 @@ cache = "TRUE"
 on_disk = "FALSE"
 
 data_name = os.environ['SRC_DATANAME']
+s3_bucket = os.environ['S3_BUCKET']
 #src_grp = os.path.join(os.getcwd(), "data", data_name+".csv")
-src_grp = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
+#src_grp = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
+#src_grp = os.path.join("s3://", s3_bucket, data_name+".csv")          # for S3 access
+src_grp = os.path.join("s3://", s3_bucket, data_name+"_partitioned/") # for S3 access
 if(bodo.get_rank()==0):
   print("loading dataset %s" % src_grp)
 
@@ -115,7 +118,6 @@ def rquestion(x,question,run,columns,mappers,ans_columns):
     if(bodo.get_rank()==0):
       write_log(task=task, data=data_name, in_rows=x.shape[0], question=question, out_rows=ans.shape[0], out_cols=ans.shape[1], solution=solution, version=ver, git=git, fun=fun, run=run, time_sec=t, mem_gb=m, cache=cache, chk=make_chk(chk), chk_time_sec=chkt, on_disk=on_disk)
 
-#from datatable import fread # for loading data only, see #47
 @bodo.jit(cache=True)
 def run(src_grp):
   print("Starting to read base dataframe")

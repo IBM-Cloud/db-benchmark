@@ -19,12 +19,28 @@ cache = "TRUE"
 on_disk = "FALSE"
 
 data_name = os.environ["SRC_DATANAME"]
-src_grp = os.path.join("data", data_name + ".csv")
-print("loading dataset %s" % data_name, flush=True)
+data_format = os.environ['SRC_FORMAT']
+data_location = os.environ['SRC_LOCATION']
+endpoint_url = os.environ["AWS_S3_ENDPOINT"]
+if(data_location.lower()=='s3'):
+  s3_bucket = os.environ['S3_BUCKET']
+  if(data_format.lower()=='parquet'):
+    src_grp = os.path.join("s3://", s3_bucket, data_name+"_partitioned/*")
+  else:
+    src_grp = os.path.join("s3://", s3_bucket, data_name+".csv")
+else:
+  if(data_format.lower()=='parquet'):
+    src_grp = os.path.join(os.getcwd(), "data", data_name+"_partitioned/*")
+  else:
+    src_grp = os.path.join(os.getcwd(), "data", data_name+".csv")
+print("loading dataset %s" % src_grp, flush=True)
 
 task_init = timeit.default_timer()
 with pl.StringCache():
-    x = pl.read_csv(src_grp, dtype={"id4":pl.Int32, "id5":pl.Int32, "id6":pl.Int32, "v1":pl.Int32, "v2":pl.Int32, "v3":pl.Float64}, low_memory=True)
+    if(data_format.lower()=='parquet'):
+      x = pl.read_parquet(src_grp, dtype={"id4":pl.Int32, "id5":pl.Int32, "id6":pl.Int32, "v1":pl.Int32, "v2":pl.Int32, "v3":pl.Float64}, low_memory=True, storage_options={"client_kwargs": {"endpoint_url": endpoint_url}})
+    else:
+      x = pl.read_csv(src_grp, dtype={"id4":pl.Int32, "id5":pl.Int32, "id6":pl.Int32, "v1":pl.Int32, "v2":pl.Int32, "v3":pl.Float64}, low_memory=True, storage_options={"client_kwargs": {"endpoint_url": endpoint_url}})
     x["id1"] = x["id1"].cast(pl.Categorical)
     x["id1"].shrink_to_fit(in_place=True)
     x["id2"] = x["id2"].cast(pl.Categorical)

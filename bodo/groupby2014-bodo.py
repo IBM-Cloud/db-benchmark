@@ -18,8 +18,11 @@ cache = "TRUE"
 on_disk = "FALSE"
 
 data_name = os.environ['SRC_DATANAME']
+s3_bucket = os.environ['S3_BUCKET']
 #src_grp = os.path.join(os.getcwd(), "data", data_name+".csv")
-src_grp = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
+#src_grp = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
+#src_grp = os.path.join("s3://", s3_bucket, data_name+".csv")          # for S3 access
+src_grp = os.path.join("s3://", s3_bucket, data_name+"_partitioned/") # for S3 access
 if(bodo.get_rank()==0):
   print("loading dataset %s" % src_grp, flush=True)
 

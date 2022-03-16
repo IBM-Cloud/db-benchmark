@@ -18,13 +18,20 @@ cache = "TRUE"
 on_disk = "FALSE"
 
 data_name = os.environ['SRC_DATANAME']
+s3_bucket = os.environ['S3_BUCKET']
 #src_jn_x = os.path.join(os.getcwd(), "data", data_name+".csv")
-src_jn_x = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
+#src_jn_x = os.path.join(os.getcwd(), "data", data_name+"_partitioned/")
+#src_jn_x = os.path.join("s3://", s3_bucket, data_name+".csv")                  # for S3 access
+src_jn_x = os.path.join("s3://", s3_bucket, data_name+"_partitioned/")         # for S3 access
 y_data_name = join_to_tbls(data_name)
-src_jn_small = os.path.join(os.getcwd(), "data", y_data_name[0]+".csv")
-src_jn_medium = os.path.join(os.getcwd(), "data", y_data_name[1]+".csv")
+#src_jn_small = os.path.join(os.getcwd(), "data", y_data_name[0]+".csv")
+src_jn_small = os.path.join("s3://", s3_bucket, y_data_name[0]+".csv")         # for S3 access
+#src_jn_medium = os.path.join(os.getcwd(), "data", y_data_name[1]+".csv")
+src_jn_medium = os.path.join("s3://", s3_bucket, y_data_name[1]+".csv")        # for S3 access
 #src_jn_big = os.path.join(os.getcwd(), "data", y_data_name[2]+".csv")
-src_jn_big = os.path.join(os.getcwd(), "data", y_data_name[2]+"_partitioned/")
+#src_jn_big = os.path.join(os.getcwd(), "data", y_data_name[2]+"_partitioned/")
+#src_jn_big = os.path.join("s3://", s3_bucket, y_data_name[2]+".csv")           # for S3 access
+src_jn_big = os.path.join("s3://", s3_bucket, y_data_name[2]+"_partitioned/") # for S3 access
 
 if(bodo.get_rank()==0):
   print("loading datasets " + src_jn_x + ", " + src_jn_small + ", " + src_jn_medium + ", " + src_jn_big, flush=True)

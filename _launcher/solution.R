@@ -167,7 +167,14 @@ if (s == "bodo") {
     cat(sprintf("Running bodo with default %s cores. You may set environment BODO_CORES for a different number of cores.\n", bodo_cores))
   }
   flush.console()
-  cmd = paste("mpiexec -n ", bodo_cores, cmd)
+  if (length(s[grep("^BODO_MPI_HOSTS", names(Sys.getenv()))])) {
+    hosts_file = Sys.getenv("BODO_MPI_HOSTS")
+    cmd = paste("mpiexec -n ", bodo_cores, "-f", hosts_file, cmd)
+    cat(sprintf("Found environment BODO_MPI_HOSTS. Running bodo across nodes found in %s.\n", hosts_file))
+  } else {
+    cmd = paste("mpiexec -n ", bodo_cores, cmd)
+    cat(sprintf("Environment BODO_MPI_HOSTS not set. Running bodo on local node only.\n"))
+  }
 }
 
 ret = system(cmd, ignore.stdout=as.logical(args[["quiet"]]))

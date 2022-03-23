@@ -32,3 +32,5 @@ duckdb,join
 modin,groupby
 modin,join
 modin,sort
+datafusion,groupby
+datafusion,join

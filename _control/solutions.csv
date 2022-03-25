@@ -34,3 +34,5 @@ modin,join
 modin,sort
 datafusion,groupby
 datafusion,join
+terality,groupby
+vaex,groupby
